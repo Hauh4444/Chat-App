@@ -16,7 +16,7 @@ const AuthScreen = () => {
     const handleSubmit = async () => {
         await login({
             username: info.username,
-            hashedPassword: SHA256(info.password).toString(),
+            hashed_password: SHA256(info.password).toString(),
         });
     };
 

@@ -17,7 +17,7 @@ const AuthProvider = ({ children }) => {
 
     const checkAuthStatus = async () => {
         try {
-            const response = await axiosInstance.get("/auth/check_auth_status");
+            const response = await axiosInstance.get("/check_auth_status/");
             setUser(response.data);
         } catch (err) {
             console.error(err);
@@ -28,8 +28,8 @@ const AuthProvider = ({ children }) => {
 
     const login = async (credentials) => {
         try {
-            const response = await axiosInstance.post("/auth/login", credentials);
-            await SecureStore.setItemAsync("sessionToken", response.data);
+            const response = await axiosInstance.post("/login/", credentials);
+            await SecureStore.setItemAsync("sessionToken", response.headers["x-session-token"]);
             await checkAuthStatus();
             return true;
         } catch (err) {
@@ -42,7 +42,7 @@ const AuthProvider = ({ children }) => {
 
     const register = async (credentials) => {
         try {
-            await axiosInstance.post("/auth/register", credentials);
+            await axiosInstance.post("/register/", credentials);
             await login(credentials);
             return true;
         } catch (err) {
@@ -55,7 +55,7 @@ const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await axiosInstance.post("/auth/logout");
+            await axiosInstance.post("/logout/");
             setUser(null);
         } catch (err) {
             console.error(err);

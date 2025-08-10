@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet } from "react-native";
 const HomeScreen = () => {
     return (
         <ScrollView style={ styles.container }>
-
+            
         </ScrollView>
     )
 }
