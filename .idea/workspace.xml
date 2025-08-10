@@ -5,33 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97ae198c-5a0a-49ec-af6e-cbb01d0b775c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/babel.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/constants/Colors.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/contexts/Auth/AuthContext.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/contexts/Auth/AuthProvider.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/navigation/Navigators/AppNavigator.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/navigation/Stacks/ProtectedStack.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/navigation/Stacks/PublicStack.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/navigation/Tabs/TabNavigator.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/navigation/Tabs/TabsConfig.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/screens/AuthScreen.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/screens/HomeScreen.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/axiosInstance.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/adaptive-icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/adaptive-icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/favicon.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/favicon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/splash-icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/splash-icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +72,7 @@
       <option name="presentableId" value="Default" />
       <updated>1754766455134</updated>
       <workItem from="1754766456266" duration="4481000" />
-      <workItem from="1754833522125" duration="2280000" />
+      <workItem from="1754833522125" duration="2429000" />
     </task>
     <servers />
   </component>
