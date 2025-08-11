@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+
 import PublicStack from "@/navigation/Stacks/PublicStack";
 import ProtectedStack from "@/navigation/Stacks/ProtectedStack";
 import { useAuth } from "@/contexts/Auth/AuthContext";

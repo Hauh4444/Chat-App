@@ -1,18 +1,18 @@
 use actix_web::web;
-use mongodb::bson::doc;
+use mongodb::bson::{ doc, Document };
 use mongodb::bson::oid::ObjectId;
 use mongodb::Database;
 use redis::aio::ConnectionManager;
 use redis::AsyncCommands;
 
-use crate::auth::models::{ User, Session };
+use crate::auth::models::{ User, AuthData, Session };
 use crate::auth::errors::{ DatabaseError, RedisError };
 
-pub async fn fetch_user_by_session(session: &Session, db: &Database) -> Result<User, DatabaseError> {
+pub async fn fetch_user_by_session_data(session: &Session, db: &Database) -> Result<User, DatabaseError> {
     let id = ObjectId::parse_str(&session.user_id).map_err(|_| DatabaseError::NotFound)?;
     let collection = db.collection::<User>("users");
-    let filter = doc! { "_id": id };
-    match collection.find_one(filter).await? {
+    let document = doc! { "_id": id };
+    match collection.find_one(document).await? {
         Some(user) => Ok(user),
         None => Err(DatabaseError::NotFound),
     }
@@ -20,11 +20,17 @@ pub async fn fetch_user_by_session(session: &Session, db: &Database) -> Result<U
 
 pub async fn fetch_user_by_username(username: &str, db: &Database) -> Result<User, DatabaseError> {
     let collection = db.collection::<User>("users");
-    let filter = doc! { "username": username };
-    match collection.find_one(filter).await? {
+    let document = doc! { "username": username };
+    match collection.find_one(document).await? {
         Some(user) => Ok(user),
         None => Err(DatabaseError::NotFound),
     }
+}
+
+pub async fn create_user(user: &AuthData, db: &Database) -> Result<(), DatabaseError> {
+    let collection = db.collection::<Document>("users");
+    let document = doc! { "username": &user.username, "hashed_password": &user.hashed_password };
+    collection.insert_one(document).await.map(|_| ()).map_err(DatabaseError::Mongo)
 }
 
 pub async fn fetch_session_by_token(token: &str, redis: &web::Data<ConnectionManager>) -> Result<Session, RedisError> {

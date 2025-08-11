@@ -2,8 +2,8 @@ use actix_web::{ web, Responder, HttpRequest, HttpResponse };
 use mongodb::Database;
 use redis::aio::ConnectionManager;
 
-use crate::auth::mappers::{ fetch_user_by_session, fetch_user_by_username, create_session };
-use crate::auth::models::{ AuthResponse, AuthData, Session };
+use crate::auth::mappers::{ fetch_user_by_session_data, fetch_user_by_username, create_user, create_session };
+use crate::auth::models::{ AuthData, AuthResponse, Session };
 use crate::auth::services::{ validate_session, generate_session_token };
 use crate::auth::errors::{ DatabaseError, RedisError };
 
@@ -12,7 +12,7 @@ pub async fn check_auth_status(req: HttpRequest, db: web::Data<Database>, redis:
         Ok(session) => session,
         Err(response) => return response,
     };
-    match fetch_user_by_session(&session, &db).await {
+    match fetch_user_by_session_data(&session, &db).await {
         Ok(user) => HttpResponse::Ok().json(AuthResponse { username: user.username }),
         Err(DatabaseError::NotFound) => {
             return HttpResponse::Unauthorized().body("User not found");
@@ -28,18 +28,15 @@ pub async fn login(data: web::Json<AuthData>, db: web::Data<Database>, redis: we
     let auth_data = data.into_inner();
     let user = match fetch_user_by_username(&auth_data.username, &db).await {
         Ok(user) => user,
-        Err(DatabaseError::NotFound) => {
-            return HttpResponse::Unauthorized().body("User not found");
-        },
+        Err(DatabaseError::NotFound) => return HttpResponse::Unauthorized().body("User not found"),
         Err(DatabaseError::Mongo(e)) => {
             eprintln!("Database error while fetching user: {:?}", e);
             return HttpResponse::InternalServerError().body("Internal server error");
-        },
+        }
     };
     if &auth_data.hashed_password != &user.hashed_password {
         return HttpResponse::Unauthorized().body(format!("Invalid password"));
     };
-
     let token = generate_session_token();
     let session = Session { user_id: user._id.to_hex(), token: token.to_string() };
     match create_session(&session, &redis).await {
@@ -59,8 +56,32 @@ pub async fn login(data: web::Json<AuthData>, db: web::Data<Database>, redis: we
     }
 }
 
+pub async fn register(data: web::Json<AuthData>, db: web::Data<Database>) -> impl Responder {
+    let auth_data = data.into_inner();
+    match fetch_user_by_username(&auth_data.username, &db).await {
+        Ok(_) => return HttpResponse::Conflict().body("Username already exists"),
+        Err(DatabaseError::Mongo(e)) => {
+            eprintln!("Database error while fetching user: {:?}", e);
+            return HttpResponse::InternalServerError().body("Internal server error");
+        },
+        Err(DatabaseError::NotFound) => {},
+    };
+    match create_user(&auth_data, &db).await {
+        Ok(_) => HttpResponse::Ok().body("User registered"),
+        Err(DatabaseError::Mongo(e)) => {
+            eprintln!("Database error while creating user: {:?}", e);
+            return HttpResponse::InternalServerError().body("Internal server error");
+        },
+        Err(e) => {
+            eprintln!("Unexpected error while creating user: {:?}", e);
+            return HttpResponse::InternalServerError().body("Unexpected error")
+        },
+    }
+}
+
 pub fn configure_auth_routes(cfg: &mut web::ServiceConfig) {
     cfg
         .route("/check_auth_status/", web::get().to(check_auth_status))
-        .route("/login/", web::post().to(login));
+        .route("/login/", web::post().to(login))
+        .route("/register/", web::post().to(register));
 }

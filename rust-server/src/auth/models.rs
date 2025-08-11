@@ -8,18 +8,19 @@ pub struct User {
     pub hashed_password: String,
 }
 
-#[derive(serde::Serialize)]
-pub struct AuthResponse {
-    pub username: String,
-}
-
 #[derive(Serialize, Deserialize)]
 pub struct AuthData {
     pub username: String,
     pub hashed_password: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(serde::Serialize)]
+pub struct AuthResponse {
+    pub username: String,
+}
+
+
+#[derive(Serialize, Deserialize)]
 pub struct Session {
     pub user_id: String,
     pub token: String,

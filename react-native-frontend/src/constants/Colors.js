@@ -1,32 +1,41 @@
 const Colors = {
     light: {
-        text: "#0F0F0F",
         background: "#FFFFFF",
+        text: "#0F0F0F",
         border: "#E5E7EB",
         shadow: "#111827",
 
         cardBackground: "#F9FAFB",
+        inputBackground: "#F2F2F6",
 
-        buttonText: "#F9FAFB",
         buttonBackground: "#4169E1",
+        buttonText: "#F9FAFB",
 
-        activeTint: "#FFFFFF",
+        linkText: "#4169E1",
+        errorText: "#E34234",
+
         activeBackground: "#4169E1",
+        activeTint: "#FFFFFF",
+        inactiveBackground: "#E5E7EB",
         inactiveTint: "#6B7280",
     },
     dark: {
+        background: "#000000",
         text: "#F9FAFB",
-        background: "#0F0F0F",
         border: "#374151",
         shadow: "#E5E7EB",
 
         cardBackground: "#0F0F0F",
 
-        buttonText: "#0F0F0F",
         buttonBackground: "#1E90FF",
+        buttonText: "#0F0F0F",
 
-        activeTint: "#0F0F0F",
-        activeBackground: "#4169E1",
+        linkText: "#1E90FF",
+        errorText: "#FF4200",
+
+        activeBackground: "#1E90FF",
+        activeTint: "#000000",
+        inactiveBackground: "#374151",
         inactiveTint: "#9CA3AF",
     },
 };

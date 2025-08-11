@@ -1,10 +1,22 @@
 import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { tabs } from "./TabsConfig.js";
+
+import HomeScreen from "@/screens/HomeScreen";
 import { getColors } from "@/constants/Colors.js";
 
 const Tab = createBottomTabNavigator();
+
+const tabs = [
+    {
+        name: "Home",
+        component: HomeScreen,
+        icon: {
+            focused: "home",
+            unfocused: "home-outline",
+        },
+    },
+];
 
 const TabNavigator = () => (
     <Tab.Navigator
@@ -17,7 +29,7 @@ const TabNavigator = () => (
                 tabBarActiveTintColor: styles.activeTintColor,
                 tabBarActiveBackgroundColor: styles.activeBackgroundColor,
                 tabBarInactiveTintColor: styles.inactiveTintColor,
-                tabBarLabelStyle: styles.label,
+                tabBarLabelStyle: styles.inputLabel,
                 tabBarStyle: styles.bar,
                 tabBarIconStyle: styles.icon,
                 tabBarIcon: ({ focused, color }) => (
@@ -51,7 +63,7 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: 4,
     },
-    label: {
+    inputLabel: {
         fontSize: 10,
         fontWeight: "600",
     },
