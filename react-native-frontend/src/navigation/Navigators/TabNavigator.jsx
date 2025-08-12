@@ -2,18 +2,36 @@ import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-import HomeScreen from "@/screens/HomeScreen";
+import ChatsScreen from "@/screens/ChatsScreen.jsx";
+import ProfileScreen from "@/screens/ProfileScreen.jsx";
+import SettingsScreen from "@/screens/SettingsScreen.jsx";
 import { getColors } from "@/constants/Colors.js";
 
 const Tab = createBottomTabNavigator();
 
 const tabs = [
     {
-        name: "Home",
-        component: HomeScreen,
+        name: "Profile",
+        component: ProfileScreen,
         icon: {
-            focused: "home",
-            unfocused: "home-outline",
+            focused: "people",
+            unfocused: "people-outline",
+        },
+    },
+    {
+        name: "Chats",
+        component: ChatsScreen,
+        icon: {
+            focused: "chatbox-ellipses",
+            unfocused: "chatbox-ellipses-outline",
+        },
+    },
+    {
+        name: "Settings",
+        component: SettingsScreen,
+        icon: {
+            focused: "settings",
+            unfocused: "settings-outline",
         },
     },
 ];
@@ -26,18 +44,15 @@ const TabNavigator = () => (
 
             return {
                 headerShown: false,
-                tabBarActiveTintColor: styles.activeTintColor,
-                tabBarActiveBackgroundColor: styles.activeBackgroundColor,
-                tabBarInactiveTintColor: styles.inactiveTintColor,
+                tabBarShowLabel: false,
+                tabBarActiveTintColor: colors.activeTint,
+                tabBarActiveBackgroundColor: colors.activeBackground,
+                tabBarInactiveTintColor: colors.inactiveTint,
                 tabBarLabelStyle: styles.inputLabel,
                 tabBarStyle: styles.bar,
                 tabBarIconStyle: styles.icon,
                 tabBarIcon: ({ focused, color }) => (
-                    <Ionicons
-                        name={ focused ? tab.icon.focused : tab.icon.unfocused }
-                        size={ 22 }
-                        color={ color }
-                    />
+                    <Ionicons name={ focused ? tab.icon.focused : tab.icon.unfocused } size={ 32 } color={ color } />
                 ),
             };
         }}
@@ -60,7 +75,7 @@ const styles = StyleSheet.create({
         shadowColor: colors.shadow,
         shadowOffset: { width: 0, height: -2 },
         shadowOpacity: 0.1,
-        shadowRadius: 5,
+        shadowRadius: 2,
         elevation: 4,
     },
     inputLabel: {
@@ -68,9 +83,7 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
     icon: {
-        marginTop: 2,
+        width: "100%",
+        height: "100%",
     },
-    activeTintColor: colors.activeTint,
-    activeBackgroundColor: colors.activeBackground,
-    inactiveTintColor: colors.inactiveTint,
 });

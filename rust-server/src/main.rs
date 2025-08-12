@@ -4,15 +4,20 @@ use actix_web::{ App, HttpServer, web, http::header, middleware::Logger };
 use dotenv::dotenv;
 use std::env;
 use env_logger::Env;
-use mongodb::{Client, options::ClientOptions};
+use mongodb::{ Client, options::ClientOptions };
 use redis::Client as RedisClient;
 use redis::aio::ConnectionManager;
 
 use crate::test::routes::configure_test_routes;
 use crate::auth::routes::configure_auth_routes;
+use crate::profile::routes::configure_profile_routes;
+use crate::user::routes::configure_user_routes;
 
 mod test;
 mod auth;
+mod errors;
+mod profile;
+mod user;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -46,6 +51,8 @@ async fn main() -> std::io::Result<()> {
                 web::scope("/api")
                     .configure(configure_test_routes)
                     .configure(configure_auth_routes)
+                    .configure(configure_profile_routes)
+                    .configure(configure_user_routes)
             )
             .service(Files::new("/static", "static").show_files_listing())
     })

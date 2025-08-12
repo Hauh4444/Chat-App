@@ -3,7 +3,7 @@ use mongodb::error::Error as MongoError;
 
 #[derive(Debug, Error)]
 pub enum DatabaseError {
-    #[error("User not found")]
+    #[error("Not found")]
     NotFound,
 
     #[error(transparent)]
@@ -12,7 +12,7 @@ pub enum DatabaseError {
 
 #[derive(Error, Debug)]
 pub enum RedisError {
-    #[error("Session not found")]
+    #[error("Not found")]
     NotFound,
 
     #[error(transparent)]

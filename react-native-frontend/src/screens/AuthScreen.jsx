@@ -14,7 +14,7 @@ const AuthScreen = ({ navigation }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("")
-    // TODO Handle Stay Signed In Functionality (Currently always is the case)
+    // TODO Handle stay signed in functionality (currently always is the case)
     const [staySignedIn, setStaySignedIn] = useState(false);
 
     const toggleAuthMode = () => {
@@ -48,6 +48,7 @@ const AuthScreen = ({ navigation }) => {
             <Text style={ styles.headerText }>
                 { isLogin ? "Login to your account" : "Create your account" }
             </Text>
+
             <Text style={ styles.inputLabel }>
                 Username or email address
             </Text>
@@ -56,6 +57,7 @@ const AuthScreen = ({ navigation }) => {
                 onChangeText={ (value) => setUsername(value) }
                 value={ username }
             />
+
             <Text style={ styles.inputLabel }>
                 Enter your password
             </Text>
@@ -65,6 +67,7 @@ const AuthScreen = ({ navigation }) => {
                 value={ password }
                 secureTextEntry={ true }
             />
+
             { !isLogin && (
                 <>
                     <Text style={ styles.inputLabel }>
@@ -78,6 +81,7 @@ const AuthScreen = ({ navigation }) => {
                     />
                 </>
             ) }
+
             <View style={ styles.formOptions }>
                 <Pressable style={ styles.checkboxContainer } onPress={ () => setStaySignedIn(!staySignedIn) }>
                     <CheckBox
@@ -89,29 +93,29 @@ const AuthScreen = ({ navigation }) => {
                         Remember me
                     </Text>
                 </Pressable>
+
                 { isLogin && (
                     <Text style={ styles.linkText } onPress={ () => navigation.navigate("ForgotPassword") }>
                         Forgot password
                     </Text>
                 ) }
             </View>
+
             { error !== "" && (
                 <View style={ styles.errorContainer }>
-                    <Ionicons
-                        name="alert-circle"
-                        size={ 22 }
-                        color={ colors.errorText }
-                    />
+                    <Ionicons name="alert-circle" size={ 24 } color={ colors.errorText } />
                     <Text style={ styles.errorText }>
                         { error }
                     </Text>
                 </View>
             ) }
+
             <Pressable style={ styles.submitButton } onPress={ () => handleSubmit() }>
                 <Text style={ styles.submitButtonText }>
                     { isLogin ? "LOG IN" : "CREATE ACCOUNT" }
                 </Text>
             </Pressable>
+
             <Text style={ styles.footerText }>
                 { isLogin ? "Don't have an account? " : "Already have an account? " }
                 <Text style={ styles.linkText } onPress={ () => toggleAuthMode() }>
@@ -182,7 +186,7 @@ const styles = StyleSheet.create({
         shadowColor: colors.shadow,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
-        shadowRadius: 5,
+        shadowRadius: 2,
         elevation: 4,
         color: colors.text,
         fontSize: 16,
@@ -210,7 +214,7 @@ const styles = StyleSheet.create({
         shadowColor: colors.shadow,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
-        shadowRadius: 5,
+        shadowRadius: 2,
         elevation: 4,
     },
     submitButtonText: {

@@ -1,6 +1,8 @@
 import { ScrollView, StyleSheet } from "react-native";
 
-const HomeScreen = () => {
+import { getColors } from "@/constants/Colors.js";
+
+const SettingsScreen = ({ navigation }) => {
     return (
         <ScrollView style={ styles.container }>
 
@@ -8,7 +10,9 @@ const HomeScreen = () => {
     )
 }
 
-export default HomeScreen;
+export default SettingsScreen;
+
+const colors = getColors();
 
 const styles = StyleSheet.create({
     container: {

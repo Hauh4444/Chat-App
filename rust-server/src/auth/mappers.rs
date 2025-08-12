@@ -1,12 +1,13 @@
 use actix_web::web;
-use mongodb::bson::{ doc, Document };
+use mongodb::bson::doc;
 use mongodb::bson::oid::ObjectId;
 use mongodb::Database;
 use redis::aio::ConnectionManager;
 use redis::AsyncCommands;
 
 use crate::auth::models::{ User, AuthData, Session };
-use crate::auth::errors::{ DatabaseError, RedisError };
+use crate::profile::models::ProfileData;
+use crate::errors::{ DatabaseError, RedisError };
 
 pub async fn fetch_user_by_session_data(session: &Session, db: &Database) -> Result<User, DatabaseError> {
     let id = ObjectId::parse_str(&session.user_id).map_err(|_| DatabaseError::NotFound)?;
@@ -27,10 +28,11 @@ pub async fn fetch_user_by_username(username: &str, db: &Database) -> Result<Use
     }
 }
 
-pub async fn create_user(user: &AuthData, db: &Database) -> Result<(), DatabaseError> {
-    let collection = db.collection::<Document>("users");
-    let document = doc! { "username": &user.username, "hashed_password": &user.hashed_password };
-    collection.insert_one(document).await.map(|_| ()).map_err(DatabaseError::Mongo)
+pub async fn create_user(auth_data: &AuthData, db: &Database) -> Result<ProfileData, DatabaseError> {
+    let collection = db.collection::<AuthData>("users");
+    let result = collection.insert_one(auth_data).await.map_err(DatabaseError::Mongo);
+    let inserted_id: ObjectId = result.unwrap().inserted_id.as_object_id().ok_or(DatabaseError::NotFound)?;
+    Ok(ProfileData { user_id: inserted_id, username: auth_data.username.clone() })
 }
 
 pub async fn fetch_session_by_token(token: &str, redis: &web::Data<ConnectionManager>) -> Result<Session, RedisError> {

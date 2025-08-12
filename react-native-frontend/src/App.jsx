@@ -1,5 +1,5 @@
-import AuthProvider from "@/contexts/Auth/AuthProvider";
-import AppNavigator from "@/navigation/Navigators/AppNavigator";
+import AuthProvider from "@/contexts/Auth/AuthProvider.jsx";
+import AppNavigator from "@/navigation/Navigators/AppNavigator.jsx";
 
 const App = () => {
     return (

@@ -23,5 +23,6 @@ pub struct AuthResponse {
 #[derive(Serialize, Deserialize)]
 pub struct Session {
     pub user_id: String,
+    pub username: String,
     pub token: String,
 }

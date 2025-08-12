@@ -5,7 +5,8 @@ use redis::aio::ConnectionManager;
 use crate::auth::mappers::{ fetch_user_by_session_data, fetch_user_by_username, create_user, create_session };
 use crate::auth::models::{ AuthData, AuthResponse, Session };
 use crate::auth::services::{ validate_session, generate_session_token };
-use crate::auth::errors::{ DatabaseError, RedisError };
+use crate::profile::mappers::create_profile;
+use crate::errors::{ DatabaseError, RedisError };
 
 pub async fn check_auth_status(req: HttpRequest, db: web::Data<Database>, redis: web::Data<ConnectionManager>) -> impl Responder {
     let session = match validate_session(&req, &redis).await {
@@ -38,7 +39,7 @@ pub async fn login(data: web::Json<AuthData>, db: web::Data<Database>, redis: we
         return HttpResponse::Unauthorized().body(format!("Invalid password"));
     };
     let token = generate_session_token();
-    let session = Session { user_id: user._id.to_hex(), token: token.to_string() };
+    let session = Session { user_id: user._id.to_hex(), username: user.username, token: token.to_string() };
     match create_session(&session, &redis).await {
         Ok(()) => HttpResponse::Ok().insert_header(("x-session-token", token)).body("Session created"),
         Err(RedisError::Redis(e)) => {
@@ -66,7 +67,18 @@ pub async fn register(data: web::Json<AuthData>, db: web::Data<Database>) -> imp
         },
         Err(DatabaseError::NotFound) => {},
     };
-    match create_user(&auth_data, &db).await {
+    let profile_data = match create_user(&auth_data, &db).await {
+        Ok(user) => user,
+        Err(DatabaseError::Mongo(e)) => {
+            eprintln!("Database error while creating user: {:?}", e);
+            return HttpResponse::InternalServerError().body("Internal server error");
+        },
+        Err(e) => {
+            eprintln!("Unexpected error while creating user: {:?}", e);
+            return HttpResponse::InternalServerError().body("Unexpected error")
+        },
+    };
+    match create_profile(&profile_data, &db).await {
         Ok(_) => HttpResponse::Ok().body("User registered"),
         Err(DatabaseError::Mongo(e)) => {
             eprintln!("Database error while creating user: {:?}", e);
